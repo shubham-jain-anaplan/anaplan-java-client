@@ -72,8 +72,11 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.Security;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
@@ -99,6 +102,9 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMParser;
@@ -167,7 +173,7 @@ public abstract class Program {
   private static String[] pagesSplit;
   private static int maxRetryCount = Constants.MIN_RETRY_COUNT;
   private static int retryTimeout = Constants.MIN_RETRY_TIMEOUT_SECS;
-  private static int httpConnectionTimeout = Constants.MIN_HTTP_CONNECTION_TIMEOUT_SECS;
+  private static int httpConnectionTimeout = Constants.DEFAULT_HTTP_CONNECTION_TIMEOUT_SECS;
   private static final String[] CSV_LOG_HEADER =
       new String[] {"Name", "Code", "failureType", "failureMessageDetails"};
   private static final String GET_JSON = "-get:json";
@@ -789,6 +795,13 @@ public abstract class Program {
           somethingDone = true;
           File sourceFile = new File(args[argi++]);
           String destId = fileId == null ? sourceFile.getName() : fileId;
+          if (!sourceFile.exists()) {
+            	LOG.error("File does not exist.");
+            } else if (sourceFile.length() == 0) {
+            	LOG.error("File is empty,please provide valid file to upload");
+            	LOG.error("Exiting program...");
+            	System.exit(1); 
+            } 
           ServerFile serverFile = getServerFile(workspaceId, modelId,
               destId, true);
           if (serverFile != null) {
@@ -1116,7 +1129,8 @@ public abstract class Program {
     }
   }
 
-  public static void logModules() throws UnknownAuthenticationException {
+  public static void logModules()
+      throws UnknownAuthenticationException, NoSuchPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, InvalidKeySpecException {
     Model model = getModel(workspaceId, modelId);
     if (model == null) {
       return;
@@ -1141,7 +1155,8 @@ public abstract class Program {
     }
   }
 
-  private static void logModuleViews(ModelData model) throws UnknownAuthenticationException {
+  private static void logModuleViews(ModelData model)
+      throws UnknownAuthenticationException, NoSuchPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, InvalidKeySpecException {
     String currentWorkspaceId = model.getCurrentWorkspaceId();
     String currentModelId = model.getId();
     Iterable<ModuleData> moduleIterator = getService()
@@ -1161,7 +1176,7 @@ public abstract class Program {
           try {
             viewIterator = getService()
                 .getViews(currentModelId, module.getId());
-          } catch (UnknownAuthenticationException e) {
+          } catch (UnknownAuthenticationException | NoSuchPaddingException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException | InvalidKeySpecException e) {
             return;
           }
           StreamSupport.stream(viewIterator.spliterator(), false)
@@ -1554,7 +1569,7 @@ public abstract class Program {
     if (!noValidateWorkspace) {
       try {
         result = getService().getWorkspace(workspaceId);
-      } catch (WorkspaceNotFoundException | UnknownAuthenticationException ignored) {
+      } catch (WorkspaceNotFoundException | UnknownAuthenticationException | NoSuchPaddingException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException | InvalidKeySpecException ignored) {
       }
     }
     if (result == null) {
@@ -1562,7 +1577,7 @@ public abstract class Program {
       data.setId(workspaceId);
       try {
         result = new Workspace(getService(), data);
-      } catch (UnknownAuthenticationException ignored) {
+      } catch (UnknownAuthenticationException | NoSuchPaddingException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | IllegalBlockSizeException | BadPaddingException | InvalidKeyException | InvalidKeySpecException ignored) {
       }
     }
     return result;
@@ -1575,7 +1590,8 @@ public abstract class Program {
    * @return the service instance
    * @since 1.3
    */
-  protected static Service getService() throws AnaplanAPIException, UnknownAuthenticationException {
+  protected static Service getService()
+      throws AnaplanAPIException, UnknownAuthenticationException, NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException {
     if (service != null) {
       return service;
     }
