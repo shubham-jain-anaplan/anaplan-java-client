@@ -1,47 +1,139 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <parent>
-    <artifactId>anaplan-connect</artifactId>
-    <groupId>com.anaplan.java.client</groupId>
-    <version>4.1.0</version>
-  </parent>
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>anaplan-connect-client</artifactId>
-  <version>4.1.0</version>
+  <groupId>com.anaplan.client</groupId>
+  <artifactId>anaplan-connect</artifactId>
+  <version>4.3.2</version>
+  <name>Anaplan Connect</name>
 
   <properties>
-    <ac.version>4.1.0</ac.version>
+    <ac.version>4.3.3</ac.version>
+    <acl.version>2.4.4</acl.version>
     <category>Community</category>
     <licensePath>LICENSE.md</licensePath>
     <maven.build.timestamp.format>MMM dd, yyyy @ KK:mm:ss a (z)</maven.build.timestamp.format>
-    <jdk.version>1.8</jdk.version>
+    <jdk.version>21</jdk.version>
+    <jdk.target.version>1.8</jdk.target.version>
+    <jdk.release.version>8</jdk.release.version>
     <compiler.plugin.version>3.8.0</compiler.plugin.version>
+    <feign-jackson.version>10.0.0</feign-jackson.version>
     <github.global.server>github</github.global.server>
-    <commons.io.version>2.8.0</commons.io.version>
+    <junit.version>4.12</junit.version>
+    <logback.version>1.5.18</logback.version>
+    <commons.codec.version>1.12</commons.codec.version>
+    <commons.io.version>2.19.0</commons.io.version>
+    <common.text.version>1.10.0</common.text.version>
+    <org.apache.httpcomponents.httpcore.version>4.4.11</org.apache.httpcomponents.httpcore.version>
+    <org.apache.httpcomponents.httpclient.version>4.5.7</org.apache.httpcomponents.httpclient.version>
+    <org.apache.httpcomponents.httpmime.version>4.5.7</org.apache.httpcomponents.httpmime.version>
+    <org.apache.httpcomponents.fluent-hc.version>4.5.7</org.apache.httpcomponents.fluent-hc.version>
+    <guava.version>32.1.3-jre</guava.version>
+    <opencsv.version>5.5.1</opencsv.version>
     <h2.version>2.0.204</h2.version>
+    <jcifs.version>1.3.17</jcifs.version>
     <feign.version>10.0.0</feign.version>
+    <jackson-databind.version>2.16.0</jackson-databind.version>
     <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
     <github.maven.plugin.version>0.12</github.maven.plugin.version>
     <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
-    <plexus.utils.version>3.3.0</plexus.utils.version>
+    <mockito.version>1.10.19</mockito.version>
+    <mysql.connector.version>8.3.0</mysql.connector.version>
+    <lombok.version>1.16.18</lombok.version>
+    <bouncycastle.version>1.78</bouncycastle.version>
+    <okhttp.version>4.12.0</okhttp.version>
+    <testng.version>7.1.0</testng.version>
+    <snakeyaml.version>2.3</snakeyaml.version>
+    <jackson.dataformat.yaml.version>2.12.6</jackson.dataformat.yaml.version>
+    <plexus.utils.version>4.0.1</plexus.utils.version>
+    <protobuf-java.version>4.28.2</protobuf-java.version>
+    <plexus-cipher.version>3.0.0</plexus-cipher.version>
+    <plexus-classworlds.version>2.9.0</plexus-classworlds.version>
+    <plexus-component-annotations.version>2.2.0</plexus-component-annotations.version>
+    <plexus-interpolation.version>1.28</plexus-interpolation.version>
+    <plexus-sec-dispatcher.version>4.1.0</plexus-sec-dispatcher.version>
+    <plexus-xml.version>4.0.4</plexus-xml.version>
   </properties>
 
   <dependencies>
     <dependency>
-      <groupId>com.anaplan.java.client</groupId>
-      <artifactId>ac-impl-default</artifactId>
-      <version>${ac.version}</version>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-core</artifactId>
+        <version>${logback.version}</version>
     </dependency>
     <dependency>
       <groupId>org.bouncycastle</groupId>
-      <artifactId>bcpkix-jdk15on</artifactId>
+      <artifactId>bcpkix-jdk18on</artifactId>
+      <version>${bouncycastle.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.anaplan.client</groupId>
+      <artifactId>ac-impl-default</artifactId>
+      <version>${acl.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.opencsv</groupId>
+      <artifactId>opencsv</artifactId>
+      <version>${opencsv.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-beanutils</groupId>
+          <artifactId>commons-beanutils</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${guava.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <version>${mysql.connector.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.google.protobuf</groupId>
+          <artifactId>protobuf-java</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <version>${protobuf-java.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>1.7.10</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib-common</artifactId>
+      <version>1.7.10</version>
+    </dependency>
+    <dependency>
+      <groupId>io.github.openfeign</groupId>
+      <artifactId>feign-jackson</artifactId>
+      <version>${feign-jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>jcifs</groupId>
       <artifactId>jcifs</artifactId>
+      <version>${jcifs.version}</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson-databind.version}</version>
     </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
@@ -50,32 +142,121 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>${mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>${commons.io.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>${common.text.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
+      <version>${snakeyaml.version}</version>
+    </dependency>
+    <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-yaml</artifactId>
+      <version>${jackson.dataformat.yaml.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.yaml</groupId>
+          <artifactId>snakeyaml</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-resources-plugin</artifactId>
-      <version>3.2.0</version>
+      <version>3.3.1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-interpolation</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
       <artifactId>maven-shared-utils</artifactId>
-      <version>3.3.3</version>
+      <version>3.4.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-cipher</artifactId>
+      <version>${plexus-cipher.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-classworlds</artifactId>
+      <version>${plexus-classworlds.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-component-annotations</artifactId>
+      <version>${plexus-component-annotations.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-interpolation</artifactId>
+      <version>${plexus-interpolation.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-sec-dispatcher</artifactId>
+      <version>${plexus-sec-dispatcher.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-xml</artifactId>
+      <version>${plexus-xml.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
-      <version>3.8.1</version>
+      <version>3.9.9</version>
       <exclusions>
         <exclusion>
           <groupId>org.apache.maven.shared</groupId>
           <artifactId>maven-shared-utils</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-cipher</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-classworlds</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-component-annotations</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-interpolation</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-sec-dispatcher</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-xml</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -107,7 +288,8 @@
         <version>${compiler.plugin.version}</version>
         <configuration>
           <source>${jdk.version}</source>
-          <target>${jdk.version}</target>
+          <target>${jdk.target.version}</target>
+          <release>${jdk.release.version}</release>
         </configuration>
       </plugin>
       <!-- Maven Assembly Plugin -->
@@ -142,6 +324,22 @@
           </altDeploymentRepository>
         </configuration>
       </plugin>
+      <!--
+       Maven Github plugin:
+       1. To setup authentication, create ~/.m2/settings.xml with these
+          contents, with a new Github access token
+          (https://github.com/settings/tokens):
+          <settings>
+            <servers>
+              <server>
+                <id>github</id>
+                <password><GITHUB PERSONAL ACCESS TOKEN></password>
+              </server>
+            </servers>
+          </settings>
+       2. Run "mvn clean deploy" to push maven artifacts to Github repo
+          at anaplaninc.github.io.
+      -->
       <plugin>
         <groupId>com.github.github</groupId>
         <artifactId>site-maven-plugin</artifactId>
@@ -185,7 +383,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.3.1</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -202,10 +400,45 @@
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
+        <version>12.1.1</version>
+        <configuration>
+          <failBuildOnCVSS>7</failBuildOnCVSS>
+          <!-- <suppressionFiles>
+            <suppressionFile>${project.basedir}/suppression.xml</suppressionFile>
+          </suppressionFiles> -->
+          <outputDirectory>target/reports</outputDirectory>
+          <formats>
+            <format>HTML</format>
+            <format>JSON</format>
+          </formats>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
-
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>properties-maven-plugin</artifactId>
+        <version>1.0.0</version>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>write-project-properties</goal>
+            </goals>
+            <configuration>
+              <outputFile>${project.build.outputDirectory}/properties-from-pom.properties</outputFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
+
   <repositories>
     <repository>
       <id>anaplan-snapshots</id>
@@ -221,7 +454,7 @@
       <url>https://artifacts.anaplan-np.net/artifactory/anaplan</url>
     </repository>
     <repository>
-      <snapshots/>
+      <snapshots />
       <id>snapshots</id>
       <name>mirror</name>
       <url>https://artifacts.anaplan-np.net/artifactory/mirror</url>
