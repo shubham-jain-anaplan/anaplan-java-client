@@ -1,7 +1,12 @@
 package com.anaplan.client;
 
+import java.io.File;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -10,71 +15,68 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.crypto.tink.Aead;
+import com.google.crypto.tink.CleartextKeysetHandle;
+import com.google.crypto.tink.JsonKeysetReader;
+import com.google.crypto.tink.JsonKeysetWriter;
+import com.google.crypto.tink.KeysetHandle;
+import com.google.crypto.tink.aead.AeadConfig;
+import com.google.crypto.tink.aead.AeadKeyTemplates;
+
 /**
  * CryptoUtil class is used for encrypting and decryption
  */
 public class CryptoUtil {
-  private static final byte[] KEY = { 122, 120, 101, 87, 32, 43, 69, 83, 101, 54, 82, 23, 116, 75, 101, 66 };
-  private static final String SALT = "P@$word$@|t";
+	private static final String KEY_FILE = "aes_keyset.json";
+	
+	static {
+		try {
+			AeadConfig.register();
+		} catch (GeneralSecurityException e) {
+			throw new RuntimeException("Failed to initialize Tink", e);
+		}
+	}
+	
+	public static void generateAndStoreKey() throws GeneralSecurityException, IOException {
+		System.out.println("inside generateAndStoreKey()...");
+		KeysetHandle keysetHandle = KeysetHandle.generateNew(AeadKeyTemplates.AES256_GCM);
+		CleartextKeysetHandle.write(keysetHandle, JsonKeysetWriter.withFile(new File(KEY_FILE)));
+		System.out.println("keyset generated");
+	}
+	
+	private static Aead getAead() throws GeneralSecurityException, IOException {
+		KeysetHandle keysetHandle = CleartextKeysetHandle.read(JsonKeysetReader.withFile(new File(KEY_FILE)));
+		return keysetHandle.getPrimitive(Aead.class);
+	}
 
-  /**
-   * @param value Value to encrypt
-   * @return encrypted value
-   */
-  public static String encrypt(final String value) {
-    return encrypt(value, SALT);
-  }
+	public static byte[] encrypt(byte[] data)
+			throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
+			InvalidKeyException, BadPaddingException, IllegalBlockSizeException, InvalidKeySpecException {
 
-  /**
-   * @param value Value to encrypt
-   * @param salt salt to add to encryption
-   * @return encrypted value
-   */
-  public static String encrypt(final String value, final String salt) {
-    if (StringUtils.isBlank(value)) {
-      throw new AnaplanCyptoException("Empty value to encrypt.");
-    }
-    try {
-      Cipher cipher = getCipherInstance();
-      final SecretKeySpec secretKey = new SecretKeySpec(KEY, "AES");
-      cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-      byte[] encryptedText = cipher.doFinal(salt.concat(value).getBytes());
-      return Base64.getEncoder().encodeToString(encryptedText);
-    } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
-      throw new AnaplanCyptoException("Unable to encrypt value", e);
-    }
-  }
+		System.out.println("inside encrypt()...");
+		try {
+			Aead aead = getAead();
 
-  /**
-   * @param encodedValue Value to decrypt
-   * @return decrypted value
-   */
-  public static String decrypt(final String encodedValue) {
-    return decrypt(encodedValue, SALT);
-  }
+			byte[] ciphertext = aead.encrypt(data, null);
+			System.out.println("inside encrypt() returning...ciphertext:"+ciphertext);
+			return ciphertext; // Return salt and ciphertext combined
+		} catch (GeneralSecurityException | IOException e) {
+			throw new RuntimeException("Unable to encrypt value", e);
+		}
+	}
 
-
-  /**
-   * @param encodedValue Value to decrypt
-   * @param salt salt to add to encryption
-   * @return decrypted value
-   */
-  public static String decrypt(final String encodedValue, final String salt) {
-    if (StringUtils.isBlank(encodedValue)) {
-      throw new AnaplanCyptoException("Empty value to decrypt");
-    }
-    try {
-      Cipher cipher = getCipherInstance();
-      final SecretKeySpec secretKey = new SecretKeySpec(KEY, "AES");
-      cipher.init(Cipher.DECRYPT_MODE, secretKey);
-      byte[] encryptedText = Base64.getDecoder().decode(encodedValue.getBytes());
-      return new String(cipher.doFinal(encryptedText)).substring(SALT.length());
-    } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
-      throw new AnaplanCyptoException("Unable to encrypt value", e);
-    }
-  }
-
-  private static Cipher getCipherInstance() throws NoSuchAlgorithmException, NoSuchPaddingException {
-    return Cipher.getInstance("AES/ECB/PKCS5PADDING");
-  }
+	public static byte[] decrypt(byte[] encryptedData)
+			throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
+			InvalidKeyException, BadPaddingException, IllegalBlockSizeException, InvalidKeySpecException {
+		System.out.println("inside decrypt()...");
+		try {
+			Aead aead = getAead();
+			byte[] ciphertext = encryptedData;
+			byte[] decrypted = aead.decrypt(ciphertext, null);
+			System.out.println("inside decrypt() returning..."+decrypted);
+			return decrypted;
+		} catch (GeneralSecurityException | IOException e) {
+			throw new RuntimeException("Unable to decrypt value", e);
+		}
+	}
 }
