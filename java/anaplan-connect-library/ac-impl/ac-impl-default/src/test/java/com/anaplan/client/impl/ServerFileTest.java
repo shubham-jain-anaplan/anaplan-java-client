@@ -11,6 +11,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
+import com.anaplan.client.Constants;
 import com.anaplan.client.Model;
 import com.anaplan.client.ServerFile;
 import com.anaplan.client.api.AnaplanAPI;
@@ -19,7 +20,13 @@ import com.anaplan.client.dto.responses.ChunksResponse;
 import com.anaplan.client.dto.responses.ServerFileResponse;
 import com.anaplan.client.dto.responses.ServerFilesResponse;
 import com.anaplan.client.exceptions.AnaplanAPIException;
+import com.anaplan.client.transport.retryer.AnaplanErrorDecoder;
 import com.google.common.io.Files;
+import feign.Request;
+import feign.Request.HttpMethod;
+import feign.Response;
+import feign.Response.Builder;
+import feign.RetryableException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,6 +38,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,6 +54,7 @@ import org.slf4j.LoggerFactory;
 class ServerFileTest extends BaseTest {
 
   private static final String chunksResponseFile = "responses/file_chunks_response.json";
+  private static final String chunksResponseFile429 = "responses/file_chunks_response_429.json";
   private static final String multiChunksResponseFile = "responses/file_multi_chunks_response.json";
   private static final String fixtureFile1 = "files/File_0v1.txt";
   private static final String fixtureFile3 = "files/File_0v3.txt";
@@ -62,6 +73,31 @@ class ServerFileTest extends BaseTest {
         .thenReturn(createFeignResponse("responses/list_of_files_response.json",
             ServerFilesResponse.class));
     mockServerFile = mockModel.getServerFile("113000000025");
+  }
+
+  @Test
+  void testDownloadFileWithOverwrite429() throws IOException {
+    // mock out fetching of file chunks from server and
+    when(mockModel.getApi().getChunks(
+        mockModel.getWorkspace().getId(),
+        mockModel.getId(),
+        mockServerFile.getId()))
+        .thenReturn(createFeignResponse(chunksResponseFile429, ChunksResponse.class));
+    ChunksResponse chunksResponse = mockModel.getApi().getChunks(
+        mockModel.getWorkspace().getId(),
+        mockModel.getId(),
+        mockServerFile.getId());
+    AnaplanErrorDecoder decoder = new AnaplanErrorDecoder(null);
+    Map map = new HashMap<>();
+
+    map.put(Constants.RETRY_AFTER, Arrays.asList("100"));
+    Builder response = Response.builder().status(chunksResponse.getStatus().getCode()).reason("Full").headers(map).request(
+        Request.create(HttpMethod.GET, chunksResponse.getMeta().getSchema(), map, "{}".getBytes(), Charset.defaultCharset()));
+
+    Exception exception = decoder.decode("getChunk", response.build());
+    assertTrue(exception instanceof RetryableException);
+    assertTrue(((RetryableException)exception).retryAfter().getTime() - new Date().getTime() > 99800);
+    assertTrue(((RetryableException)exception).retryAfter().getTime() - new Date().getTime() < 100000);
   }
 
   @Test

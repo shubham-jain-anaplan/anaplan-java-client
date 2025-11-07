@@ -7,23 +7,30 @@ import com.anaplan.client.dto.DeviceCodeInfo;
 import com.anaplan.client.dto.OauthTokenInfo;
 import com.anaplan.client.exceptions.AnaplanAPIException;
 import com.anaplan.client.transport.ConnectionProperties;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Path;
+import java.security.GeneralSecurityException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
-import java.util.Base64;
-import java.util.Objects;
+import java.security.spec.InvalidKeySpecException;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Objects;
 
 /**
  * Authenticate by device
@@ -41,7 +48,8 @@ public class DeviceAuthenticator extends AbstractAuthenticator {
   private char[] clientRefreshToken;
 
   private final DeviceAuthenticator.TokenStore store;
-  public DeviceAuthenticator(ConnectionProperties connectionProperties, AnaplanAuthenticationAPI authClient) {
+  public DeviceAuthenticator(ConnectionProperties connectionProperties,
+      AnaplanAuthenticationAPI authClient) {
     super(connectionProperties, authClient);
     store = new DeviceAuthenticator.TokenStore(connectionProperties.getClientId());
   }
@@ -69,13 +77,13 @@ public class DeviceAuthenticator extends AbstractAuthenticator {
   }
 
   /**
-   * Clear JKS file
+   * Clear JDK file
    */
   public void clearRefreshTokenEntry() {
     LOG.info("Deleting already existing JKS and re-registering the device...");
 
     try {
-      Files.deleteIfExists(Paths.get(store.getRefreshTokenKeyStorePath()));
+      Files.deleteIfExists(store.getRefreshTokenKeyStorePath());
     } catch (IOException e) {
       LOG.error("The JKS file with the Refresh Token was not found at that location. {}", e.getMessage());
     }
@@ -215,10 +223,21 @@ public class DeviceAuthenticator extends AbstractAuthenticator {
   @SuppressWarnings("unused")
   public void encodeAndSetRefreshToken(String refreshToken) {
     int attempts = 0;
-    byte[] encodedKey = Base64.getEncoder().encode(refreshToken.getBytes());
+    byte[] encodedKey;
+    try {
+    	try {
+			CryptoUtil.generateAndStoreKey();
+		} catch (GeneralSecurityException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+      encodedKey = CryptoUtil.encrypt(refreshToken.getBytes());
+    } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidAlgorithmParameterException | BadPaddingException | InvalidKeyException | IllegalBlockSizeException | InvalidKeySpecException e) {
+      throw new AnaplanAPIException("Unable to save refresh");
+    }
     do {
       attempts++;
-      try (FileOutputStream fileOutputStream = new FileOutputStream(store.getRefreshTokenKeyStorePath())) {
+      try (final OutputStream fileOutputStream = Files.newOutputStream(store.getRefreshTokenKeyStorePath())) {
         KeyStore ks = Utils.saveEntryInKeyStore(encodedKey, store.getRefreshTokenKeyStoreName(), store.getKeystorePass());
         ks.store(fileOutputStream, store.getKeystorePass());
         return;
@@ -239,11 +258,11 @@ public class DeviceAuthenticator extends AbstractAuthenticator {
    */
   @SuppressWarnings("unused")
   public String getDecodedRefreshToken() {
-    try (FileInputStream fileInputStream = new FileInputStream(store.getRefreshTokenKeyStorePath())) {
+    try (final InputStream fileInputStream = Files.newInputStream(store.getRefreshTokenKeyStorePath())) {
       Key secretKeyAlias = Utils.loadKeystore(fileInputStream, store.getRefreshTokenKeyStoreName(), store.getKeystorePass());
 
       byte[] rawData = secretKeyAlias.getEncoded();
-      byte[] decodedKey = Base64.getDecoder().decode(rawData);
+      byte[] decodedKey = CryptoUtil.decrypt(rawData);
       return new String(decodedKey);
     } catch (FileNotFoundException e) {
       LOG.error("Refresh token is not set for your client id.");
@@ -254,20 +273,24 @@ public class DeviceAuthenticator extends AbstractAuthenticator {
   }
 
   public static final class TokenStore {
-    private final String refreshTokenKeyStorePath;
+    private final Path refreshTokenKeyStorePath;
     private final String refreshTokenKeyStoreName;
-    private final char[] keystorePass;
+    private char[] keystorePass;
     public TokenStore(final String clientID) {
       refreshTokenKeyStoreName = String.format("ks_%s", Utils.bytesToHex(Utils.createHash(clientID)));
       String keystoreDir = System.getProperty("user.home");
       if (StringUtils.isNotBlank(System.getenv("AC_OAUTH_KEYSTORE_DIR"))){
         keystoreDir = System.getenv("AC_OAUTH_KEYSTORE_DIR");
       }
-      refreshTokenKeyStorePath = keystoreDir + FileSystems.getDefault().getSeparator() + refreshTokenKeyStoreName + JKS;
-      keystorePass = CryptoUtil.encrypt(clientID).toCharArray();
+      refreshTokenKeyStorePath = Paths.get(keystoreDir + FileSystems.getDefault().getSeparator() + refreshTokenKeyStoreName + JKS).normalize();
+      Path currentPath = Paths.get("").toAbsolutePath();
+      if (refreshTokenKeyStorePath.getRoot().compareTo(currentPath.getRoot()) != 0) {
+        throw new AnaplanAPIException("Invalid key path");
+      }
+      keystorePass = clientID.toCharArray();
     }
 
-    public String getRefreshTokenKeyStorePath() {
+    public Path getRefreshTokenKeyStorePath() {
       return refreshTokenKeyStorePath;
     }
 

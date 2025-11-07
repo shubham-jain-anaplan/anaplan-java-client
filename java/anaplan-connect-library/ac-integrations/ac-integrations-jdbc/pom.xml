@@ -4,9 +4,9 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.anaplan.java.client</groupId>
+    <groupId>com.anaplan.client</groupId>
     <artifactId>ac-integrations</artifactId>
-    <version>4.1.0</version>
+    <version>2.4.4</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -25,14 +25,14 @@
       <version>${common-csv}</version>
     </dependency>
     <dependency>
-      <groupId>com.anaplan.java.client</groupId>
+      <groupId>com.anaplan.client</groupId>
       <artifactId>api-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <version>${junit-jupiter}</version>
-      <scope>test</scope>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-params</artifactId>
+        <version>${junit-jupiter}</version>
+        <scope>test</scope>
     </dependency>
   </dependencies>
   <build>

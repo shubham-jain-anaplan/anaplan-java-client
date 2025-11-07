@@ -144,7 +144,9 @@ public class Task extends AnaplanApiClientObject {
       } catch (Exception thrown) {
         LOG.debug("{}", Throwables.getStackTraceAsString(thrown));
         LOG.error(Utils.formatThrowable(thrown));
-      } finally {
+      }
+      //since this method runs as part of shutdown hook we need not join the thread otherwise we need to kill the java process manually .
+      /*finally {
         System.exit(1);
         try {
           Thread.currentThread().join();
@@ -152,7 +154,7 @@ public class Task extends AnaplanApiClientObject {
           LOG.error("Could not cancel running task!", e);
           Thread.currentThread().interrupt();
         }
-      }
+      }*/
     }
   }
 
@@ -262,7 +264,9 @@ public class Task extends AnaplanApiClientObject {
             "!!! The operation failed !!!  =(");
       }
       LogUtils.logSeparatorOperationStatus();
-      Arrays.asList(status.getResult().toString().split("\n")).forEach(LOG::info);
+      Arrays.asList(status.getResult().toString().split("\n")).forEach(message->{if(!status.getResult().isSuccessful()) {LOG.error(message);}else{LOG.info(message);}});
     }
+    LogUtils.logSeparatorRunAction();
+    LOG.info("<<< The operation is completed >>>");
   }
 }

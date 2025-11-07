@@ -3,7 +3,6 @@ package com.anaplan.client;
 import com.anaplan.client.dto.ListMetadataProperty;
 import com.anaplan.client.exceptions.AnaplanAPIException;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,6 +55,8 @@ public class Utils {
   private static final CSVFormat.Builder PROPERTY_FORMAT_BUILDER = CSVFormat.newFormat('=').builder().setQuote('"');
   private static final CSVFormat.Builder LINE_FORMAT_BUILDER = CSVFormat.newFormat(',').builder().setQuote('"');
   private static final Logger LOG = LoggerFactory.getLogger(Utils.class);
+
+  private static final String KEYSTORE_PROVIDER_TYPE = "JCEKS";
 
   public enum EXPORT_TYPE {
     TABULAR_SINGLE_COLUMN, TABULAR_MULTI_COLUMN, GRID_ALL_PAGES
@@ -153,13 +154,14 @@ public class Utils {
   public static List<String> getColumnValues(String[] lines, int startIndex) {
     //Regex - ,(?=(?:[^"]*"[^"]*")*[^"]*$) - matches the character , that's not inside the double quotes
     return IntStream.range(startIndex, lines.length).filter(index -> lines[index].startsWith(","))
-        .mapToObj(index -> {
-              String regex;
-              regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
-              return Arrays.stream(lines[index].split(regex)).filter(s1 -> s1 != null && !"".equals(s1)).collect(Collectors.joining(","));
-            }
-        ).collect(Collectors.toList());
+            .mapToObj(index -> {
+                      String regex;
+                      regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+                      return Arrays.stream(lines[index].split(regex)).filter(s1 -> s1 != null && !"".equals(s1)).collect(Collectors.joining(","));
+                    }
+            ).collect(Collectors.toList());
   }
+
   /**
    * If source not exist and is not a file an Exception is throw
    * @param source source to check
@@ -233,12 +235,6 @@ public class Utils {
     return value;
   }
 
-  /**
-   * Provides CSV properties from inputStream
-   * @param inputStream
-   * @return
-   * @throws IOException
-   */
   public static Map<String, String> getPropertyFile(final InputStream inputStream)
       throws IOException {
 
@@ -250,9 +246,9 @@ public class Utils {
     final CSVFormat format = PROPERTY_FORMAT_BUILDER.build();
     while (null != (line = lnr.readLine())) {
       final List<CSVRecord> records = CSVParser.parse(line, format).getRecords();
-      if (!records.isEmpty()) {
-        result.put(records.get(0).get(0), records.get(0).get(1));
-      }
+        if (!records.isEmpty()) {
+          result.put(records.get(0).get(0), records.get(0).get(1));
+        }
     }
     return result;
   }
@@ -315,14 +311,6 @@ public class Utils {
     }
   }
 
-  /**
-   * Checks provided file status
-   * @param target
-   * @param path
-   * @param file
-   * @param deleteExisting
-   * @throws IOException
-   */
   public static void checkTarget(final File target, String path, String file, boolean deleteExisting) throws IOException {
     if (target.exists()) {
       if (!target.isFile()) {
@@ -356,11 +344,6 @@ public class Utils {
     return target;
   }
 
-  /**
-   * Creates the Hash for the provided client id with SHA-512/256 algorithm
-   * @param clientId
-   * @return
-   */
   public static byte[] createHash(String clientId) {
     byte[] encodedHash = new byte[0];
     try {
@@ -372,11 +355,6 @@ public class Utils {
     return encodedHash;
   }
 
-  /**
-   * Converts bytes to hexadecimal
-   * @param hash
-   * @return
-   */
   public static String bytesToHex(byte[] hash) {
     StringBuilder hexString = new StringBuilder(2 * hash.length);
     for (byte b : hash) {
@@ -389,41 +367,18 @@ public class Utils {
     return hexString.toString();
   }
 
-  /**
-   * Loads the Keystore and provides the resulted encrypted Key
-   * @param fileInputStream
-   * @param keyStoreName
-   * @param password
-   * @return {@link Key}
-   * @throws KeyStoreException
-   * @throws IOException
-   * @throws NoSuchAlgorithmException
-   * @throws CertificateException
-   * @throws UnrecoverableKeyException
-   */
-  public static Key loadKeystore(FileInputStream fileInputStream, String keyStoreName, char[] password)
+  public static Key loadKeystore(InputStream fileInputStream, String keyStoreName, char[] password)
       throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException, UnrecoverableKeyException {
 
-    KeyStore jks = KeyStore.getInstance("JKS");
+    KeyStore jks = KeyStore.getInstance(KEYSTORE_PROVIDER_TYPE);
     jks.load(fileInputStream, password);
     Key secretKeyAlias = jks.getKey(keyStoreName, password);
     return secretKeyAlias;
   }
 
-  /**
-   * Saves the provided encoded key into the keystore
-   * @param encodedKey
-   * @param keyStoreName
-   * @param password
-   * @return {@link KeyStore}
-   * @throws KeyStoreException
-   * @throws IOException
-   * @throws NoSuchAlgorithmException
-   * @throws CertificateException
-   */
   public static KeyStore saveEntryInKeyStore(byte[] encodedKey, String keyStoreName, char[] password)
       throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
-    KeyStore ks = KeyStore.getInstance("pkcs12");
+    KeyStore ks = KeyStore.getInstance(KEYSTORE_PROVIDER_TYPE);
     ks.load(null, password);
 
     SecretKey mySecretKey = new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES");

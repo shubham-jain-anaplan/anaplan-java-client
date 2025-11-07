@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "schema": "https://api.r2p2.anaplan.com/2/0/objects/listReadRequest"
+  },
+  "status": {
+    "code": 200,
+    "message": "Success"
+  },
+  "listReadRequest": {
+    "requestId": "39EA5116127F4A989F19CCAF7F2D06F9",
+    "requestState": "IN_PROGRESS",
+    "url": "https://api.r2p2.anaplan.com/2/0/workspaces/2c9ba1a8702a01f40170ca620ed8177f/models/72E11A73F55D41A98CCDF8626210B96E/lists/101000000133/readRequests/"
+  }
+}

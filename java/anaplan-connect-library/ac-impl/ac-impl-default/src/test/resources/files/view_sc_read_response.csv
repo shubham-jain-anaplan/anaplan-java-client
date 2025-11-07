@@ -1,0 +1,478 @@
+Line Item,coresrv-2779-list,Period,Value
+name,item1,2017-01,
+name,item1,2017-02,
+name,item1,2017-03,
+name,item1,2017-04,
+name,item1,2017-05,
+name,item1,2017-06,
+name,item1,2017-07,
+name,item1,2017-08,
+name,item1,2017-09,
+name,item1,2017-10,
+name,item1,2017-11,
+name,item1,2017-12,
+name,item2,2017-01,
+name,item2,2017-02,
+name,item2,2017-03,
+name,item2,2017-04,
+name,item2,2017-05,
+name,item2,2017-06,
+name,item2,2017-07,
+name,item2,2017-08,
+name,item2,2017-09,
+name,item2,2017-10,
+name,item2,2017-11,
+name,item2,2017-12,
+name,item3,2017-01,
+name,item3,2017-02,
+name,item3,2017-03,
+name,item3,2017-04,
+name,item3,2017-05,
+name,item3,2017-06,
+name,item3,2017-07,
+name,item3,2017-08,
+name,item3,2017-09,
+name,item3,2017-10,
+name,item3,2017-11,
+name,item3,2017-12,
+email,item1,2017-01,
+email,item1,2017-02,
+email,item1,2017-03,
+email,item1,2017-04,
+email,item1,2017-05,
+email,item1,2017-06,
+email,item1,2017-07,
+email,item1,2017-08,
+email,item1,2017-09,
+email,item1,2017-10,
+email,item1,2017-11,
+email,item1,2017-12,
+email,item2,2017-01,
+email,item2,2017-02,
+email,item2,2017-03,
+email,item2,2017-04,
+email,item2,2017-05,
+email,item2,2017-06,
+email,item2,2017-07,
+email,item2,2017-08,
+email,item2,2017-09,
+email,item2,2017-10,
+email,item2,2017-11,
+email,item2,2017-12,
+email,item3,2017-01,
+email,item3,2017-02,
+email,item3,2017-03,
+email,item3,2017-04,
+email,item3,2017-05,
+email,item3,2017-06,
+email,item3,2017-07,
+email,item3,2017-08,
+email,item3,2017-09,
+email,item3,2017-10,
+email,item3,2017-11,
+email,item3,2017-12,
+data,item1,2017-01,
+data,item1,2017-02,
+data,item1,2017-03,
+data,item1,2017-04,
+data,item1,2017-05,
+data,item1,2017-06,
+data,item1,2017-07,
+data,item1,2017-08,
+data,item1,2017-09,
+data,item1,2017-10,
+data,item1,2017-11,
+data,item1,2017-12,
+data,item2,2017-01,
+data,item2,2017-02,
+data,item2,2017-03,
+data,item2,2017-04,
+data,item2,2017-05,
+data,item2,2017-06,
+data,item2,2017-07,
+data,item2,2017-08,
+data,item2,2017-09,
+data,item2,2017-10,
+data,item2,2017-11,
+data,item2,2017-12,
+data,item3,2017-01,
+data,item3,2017-02,
+data,item3,2017-03,
+data,item3,2017-04,
+data,item3,2017-05,
+data,item3,2017-06,
+data,item3,2017-07,
+data,item3,2017-08,
+data,item3,2017-09,
+data,item3,2017-10,
+data,item3,2017-11,
+data,item3,2017-12,
+sent date,item1,2017-01,
+sent date,item1,2017-02,
+sent date,item1,2017-03,
+sent date,item1,2017-04,
+sent date,item1,2017-05,
+sent date,item1,2017-06,
+sent date,item1,2017-07,
+sent date,item1,2017-08,
+sent date,item1,2017-09,
+sent date,item1,2017-10,
+sent date,item1,2017-11,
+sent date,item1,2017-12,
+sent date,item2,2017-01,
+sent date,item2,2017-02,
+sent date,item2,2017-03,
+sent date,item2,2017-04,
+sent date,item2,2017-05,
+sent date,item2,2017-06,
+sent date,item2,2017-07,
+sent date,item2,2017-08,
+sent date,item2,2017-09,
+sent date,item2,2017-10,
+sent date,item2,2017-11,
+sent date,item2,2017-12,
+sent date,item3,2017-01,
+sent date,item3,2017-02,
+sent date,item3,2017-03,
+sent date,item3,2017-04,
+sent date,item3,2017-05,
+sent date,item3,2017-06,
+sent date,item3,2017-07,
+sent date,item3,2017-08,
+sent date,item3,2017-09,
+sent date,item3,2017-10,
+sent date,item3,2017-11,
+sent date,item3,2017-12,
+signed date,item1,2017-01,
+signed date,item1,2017-02,
+signed date,item1,2017-03,
+signed date,item1,2017-04,
+signed date,item1,2017-05,
+signed date,item1,2017-06,
+signed date,item1,2017-07,
+signed date,item1,2017-08,
+signed date,item1,2017-09,
+signed date,item1,2017-10,
+signed date,item1,2017-11,
+signed date,item1,2017-12,
+signed date,item2,2017-01,
+signed date,item2,2017-02,
+signed date,item2,2017-03,
+signed date,item2,2017-04,
+signed date,item2,2017-05,
+signed date,item2,2017-06,
+signed date,item2,2017-07,
+signed date,item2,2017-08,
+signed date,item2,2017-09,
+signed date,item2,2017-10,
+signed date,item2,2017-11,
+signed date,item2,2017-12,
+signed date,item3,2017-01,
+signed date,item3,2017-02,
+signed date,item3,2017-03,
+signed date,item3,2017-04,
+signed date,item3,2017-05,
+signed date,item3,2017-06,
+signed date,item3,2017-07,
+signed date,item3,2017-08,
+signed date,item3,2017-09,
+signed date,item3,2017-10,
+signed date,item3,2017-11,
+signed date,item3,2017-12,
+envelope name,item1,2017-01,
+envelope name,item1,2017-02,
+envelope name,item1,2017-03,
+envelope name,item1,2017-04,
+envelope name,item1,2017-05,
+envelope name,item1,2017-06,
+envelope name,item1,2017-07,
+envelope name,item1,2017-08,
+envelope name,item1,2017-09,
+envelope name,item1,2017-10,
+envelope name,item1,2017-11,
+envelope name,item1,2017-12,
+envelope name,item2,2017-01,
+envelope name,item2,2017-02,
+envelope name,item2,2017-03,
+envelope name,item2,2017-04,
+envelope name,item2,2017-05,
+envelope name,item2,2017-06,
+envelope name,item2,2017-07,
+envelope name,item2,2017-08,
+envelope name,item2,2017-09,
+envelope name,item2,2017-10,
+envelope name,item2,2017-11,
+envelope name,item2,2017-12,
+envelope name,item3,2017-01,
+envelope name,item3,2017-02,
+envelope name,item3,2017-03,
+envelope name,item3,2017-04,
+envelope name,item3,2017-05,
+envelope name,item3,2017-06,
+envelope name,item3,2017-07,
+envelope name,item3,2017-08,
+envelope name,item3,2017-09,
+envelope name,item3,2017-10,
+envelope name,item3,2017-11,
+envelope name,item3,2017-12,
+envelope status,item1,2017-01,
+envelope status,item1,2017-02,
+envelope status,item1,2017-03,
+envelope status,item1,2017-04,
+envelope status,item1,2017-05,
+envelope status,item1,2017-06,
+envelope status,item1,2017-07,
+envelope status,item1,2017-08,
+envelope status,item1,2017-09,
+envelope status,item1,2017-10,
+envelope status,item1,2017-11,
+envelope status,item1,2017-12,
+envelope status,item2,2017-01,
+envelope status,item2,2017-02,
+envelope status,item2,2017-03,
+envelope status,item2,2017-04,
+envelope status,item2,2017-05,
+envelope status,item2,2017-06,
+envelope status,item2,2017-07,
+envelope status,item2,2017-08,
+envelope status,item2,2017-09,
+envelope status,item2,2017-10,
+envelope status,item2,2017-11,
+envelope status,item2,2017-12,
+envelope status,item3,2017-01,
+envelope status,item3,2017-02,
+envelope status,item3,2017-03,
+envelope status,item3,2017-04,
+envelope status,item3,2017-05,
+envelope status,item3,2017-06,
+envelope status,item3,2017-07,
+envelope status,item3,2017-08,
+envelope status,item3,2017-09,
+envelope status,item3,2017-10,
+envelope status,item3,2017-11,
+envelope status,item3,2017-12,
+sent document,item1,2017-01,
+sent document,item1,2017-02,
+sent document,item1,2017-03,
+sent document,item1,2017-04,
+sent document,item1,2017-05,
+sent document,item1,2017-06,
+sent document,item1,2017-07,
+sent document,item1,2017-08,
+sent document,item1,2017-09,
+sent document,item1,2017-10,
+sent document,item1,2017-11,
+sent document,item1,2017-12,
+sent document,item2,2017-01,
+sent document,item2,2017-02,
+sent document,item2,2017-03,
+sent document,item2,2017-04,
+sent document,item2,2017-05,
+sent document,item2,2017-06,
+sent document,item2,2017-07,
+sent document,item2,2017-08,
+sent document,item2,2017-09,
+sent document,item2,2017-10,
+sent document,item2,2017-11,
+sent document,item2,2017-12,
+sent document,item3,2017-01,
+sent document,item3,2017-02,
+sent document,item3,2017-03,
+sent document,item3,2017-04,
+sent document,item3,2017-05,
+sent document,item3,2017-06,
+sent document,item3,2017-07,
+sent document,item3,2017-08,
+sent document,item3,2017-09,
+sent document,item3,2017-10,
+sent document,item3,2017-11,
+sent document,item3,2017-12,
+action,item1,2017-01,
+action,item1,2017-02,
+action,item1,2017-03,
+action,item1,2017-04,
+action,item1,2017-05,
+action,item1,2017-06,
+action,item1,2017-07,
+action,item1,2017-08,
+action,item1,2017-09,
+action,item1,2017-10,
+action,item1,2017-11,
+action,item1,2017-12,
+action,item2,2017-01,
+action,item2,2017-02,
+action,item2,2017-03,
+action,item2,2017-04,
+action,item2,2017-05,
+action,item2,2017-06,
+action,item2,2017-07,
+action,item2,2017-08,
+action,item2,2017-09,
+action,item2,2017-10,
+action,item2,2017-11,
+action,item2,2017-12,
+action,item3,2017-01,
+action,item3,2017-02,
+action,item3,2017-03,
+action,item3,2017-04,
+action,item3,2017-05,
+action,item3,2017-06,
+action,item3,2017-07,
+action,item3,2017-08,
+action,item3,2017-09,
+action,item3,2017-10,
+action,item3,2017-11,
+action,item3,2017-12,
+col1,item1,2017-01,794466
+col1,item1,2017-02,794466
+col1,item1,2017-03,794466
+col1,item1,2017-04,794466
+col1,item1,2017-05,794466
+col1,item1,2017-06,794466
+col1,item1,2017-07,794466
+col1,item1,2017-08,794466
+col1,item1,2017-09,794466
+col1,item1,2017-10,794466
+col1,item1,2017-11,794466
+col1,item1,2017-12,794466
+col1,item1,FY17Q1,2383398
+col1,item1,FY17Q2,2383398
+col1,item1,FY17Q3,2383398
+col1,item1,FY17Q4,2383398
+col1,item1,FY17,9533592
+col1,item2,2017-01,794466
+col1,item2,2017-02,794466
+col1,item2,2017-03,794466
+col1,item2,2017-04,794466
+col1,item2,2017-05,794466
+col1,item2,2017-06,794466
+col1,item2,2017-07,794466
+col1,item2,2017-08,794466
+col1,item2,2017-09,794466
+col1,item2,2017-10,794466
+col1,item2,2017-11,794466
+col1,item2,2017-12,794466
+col1,item2,FY17Q1,2383398
+col1,item2,FY17Q2,2383398
+col1,item2,FY17Q3,2383398
+col1,item2,FY17Q4,2383398
+col1,item2,FY17,9533592
+col1,item3,2017-01,794466
+col1,item3,2017-02,794466
+col1,item3,2017-03,794466
+col1,item3,2017-04,794466
+col1,item3,2017-05,794466
+col1,item3,2017-06,794466
+col1,item3,2017-07,794466
+col1,item3,2017-08,794466
+col1,item3,2017-09,794466
+col1,item3,2017-10,794466
+col1,item3,2017-11,794466
+col1,item3,2017-12,794466
+col1,item3,FY17Q1,2383398
+col1,item3,FY17Q2,2383398
+col1,item3,FY17Q3,2383398
+col1,item3,FY17Q4,2383398
+col1,item3,FY17,9533592
+col2,item1,2017-01,342
+col2,item1,2017-02,342
+col2,item1,2017-03,342
+col2,item1,2017-04,342
+col2,item1,2017-05,342
+col2,item1,2017-06,342
+col2,item1,2017-07,342
+col2,item1,2017-08,342
+col2,item1,2017-09,342
+col2,item1,2017-10,342
+col2,item1,2017-11,342
+col2,item1,2017-12,342
+col2,item1,FY17Q1,1026
+col2,item1,FY17Q2,1026
+col2,item1,FY17Q3,1026
+col2,item1,FY17Q4,1026
+col2,item1,FY17,4104
+col2,item2,2017-01,342
+col2,item2,2017-02,342
+col2,item2,2017-03,342
+col2,item2,2017-04,342
+col2,item2,2017-05,342
+col2,item2,2017-06,342
+col2,item2,2017-07,342
+col2,item2,2017-08,342
+col2,item2,2017-09,342
+col2,item2,2017-10,342
+col2,item2,2017-11,342
+col2,item2,2017-12,342
+col2,item2,FY17Q1,1026
+col2,item2,FY17Q2,1026
+col2,item2,FY17Q3,1026
+col2,item2,FY17Q4,1026
+col2,item2,FY17,4104
+col2,item3,2017-01,342
+col2,item3,2017-02,342
+col2,item3,2017-03,342
+col2,item3,2017-04,342
+col2,item3,2017-05,342
+col2,item3,2017-06,342
+col2,item3,2017-07,342
+col2,item3,2017-08,342
+col2,item3,2017-09,342
+col2,item3,2017-10,342
+col2,item3,2017-11,342
+col2,item3,2017-12,342
+col2,item3,FY17Q1,1026
+col2,item3,FY17Q2,1026
+col2,item3,FY17Q3,1026
+col2,item3,FY17Q4,1026
+col2,item3,FY17,4104
+col3,item1,2017-01,2323
+col3,item1,2017-02,2323
+col3,item1,2017-03,2323
+col3,item1,2017-04,2323
+col3,item1,2017-05,2323
+col3,item1,2017-06,2323
+col3,item1,2017-07,2323
+col3,item1,2017-08,2323
+col3,item1,2017-09,2323
+col3,item1,2017-10,2323
+col3,item1,2017-11,2323
+col3,item1,2017-12,2323
+col3,item1,FY17Q1,6969
+col3,item1,FY17Q2,6969
+col3,item1,FY17Q3,6969
+col3,item1,FY17Q4,6969
+col3,item1,FY17,27876
+col3,item2,2017-01,2323
+col3,item2,2017-02,2323
+col3,item2,2017-03,2323
+col3,item2,2017-04,2323
+col3,item2,2017-05,2323
+col3,item2,2017-06,2323
+col3,item2,2017-07,2323
+col3,item2,2017-08,2323
+col3,item2,2017-09,2323
+col3,item2,2017-10,2323
+col3,item2,2017-11,2323
+col3,item2,2017-12,2323
+col3,item2,FY17Q1,6969
+col3,item2,FY17Q2,6969
+col3,item2,FY17Q3,6969
+col3,item2,FY17Q4,6969
+col3,item2,FY17,27876
+col3,item3,2017-01,2323
+col3,item3,2017-02,2323
+col3,item3,2017-03,2323
+col3,item3,2017-04,2323
+col3,item3,2017-05,2323
+col3,item3,2017-06,2323
+col3,item3,2017-07,2323
+col3,item3,2017-08,2323
+col3,item3,2017-09,2323
+col3,item3,2017-10,2323
+col3,item3,2017-11,2323
+col3,item3,2017-12,2323
+col3,item3,FY17Q1,6969
+col3,item3,FY17Q2,6969
+col3,item3,FY17Q3,6969
+col3,item3,FY17Q4,6969
+col3,item3,FY17,27876

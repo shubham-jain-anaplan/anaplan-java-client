@@ -5,6 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayContaining;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -68,7 +69,7 @@ class JDBCCellReaderTest {
   void testDefaultSqlSelectQuery() throws AnaplanAPIException {
     assertThat(jdbcCellReader.getHeaderRow(), arrayContaining("COLA", "COLB", "COLC"));
     assertThat(jdbcCellReader.readDataRow(), arrayContaining("C$A&,Z(*yV@lue", "123", "W@K!A"));
-    assertEquals(0, jdbcCellReader.readDataRow().length);
+    assertNull(jdbcCellReader.readDataRow());
   }
 
   @Test

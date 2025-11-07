@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "schema": "https://api.r2p2.anaplan.com/2/0/objects/viewReadRequest"
+  },
+  "status": {
+    "code": 200,
+    "message": "Success"
+  },
+  "viewReadRequest": {
+    "requestId": "8B56FBD8165144C0B170C8CC658D6E57",
+    "requestState": "IN_PROGRESS",
+    "url": "https://api.r2p2.anaplan.com/2/0/workspaces/2c9ba1a8702a01f40170ca620ed8177f/models/72E11A73F55D41A98CCDF8626210B96E/views/102000000007/readRequests/"
+  }
+}

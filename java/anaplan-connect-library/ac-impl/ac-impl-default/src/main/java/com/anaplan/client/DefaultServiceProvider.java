@@ -7,20 +7,21 @@ import com.anaplan.client.auth.UnknownAuthenticationException;
 import com.anaplan.client.transport.ConnectionProperties;
 import com.anaplan.client.transport.client.OkHttpFeignClientProvider;
 import feign.Client;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.function.Supplier;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 public class DefaultServiceProvider {
 
   private DefaultServiceProvider(){}
 
-  /**
-   * Provides the service instance
-   * @param properties
-   * @return {@link Service}
-   * @throws UnknownAuthenticationException
-   */
   public static Service getService(ConnectionProperties properties, String clientKey, String clientValue)
-      throws UnknownAuthenticationException {
+      throws UnknownAuthenticationException, NoSuchPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, InvalidKeySpecException {
 
     OkHttpFeignClientProvider okHttpClientProvider = new OkHttpFeignClientProvider();
     Supplier<Client> clientSupplier = () -> okHttpClientProvider.createFeignClient(properties);
@@ -40,7 +41,8 @@ public class DefaultServiceProvider {
    * @param properties the connection properties
    * @return {@link DeviceAuthenticator}
    */
-  public static DeviceAuthenticator getDeviceAuthenticator(ConnectionProperties properties, String clientKey, String clientValue) {
+  public static DeviceAuthenticator getDeviceAuthenticator(ConnectionProperties properties, String clientKey, String clientValue)
+      throws NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException {
     OkHttpFeignClientProvider okHttpClientProvider = new OkHttpFeignClientProvider();
     Supplier<Client> clientSupplier = () -> okHttpClientProvider.createFeignClient(properties);
 

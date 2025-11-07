@@ -4,6 +4,7 @@ import com.anaplan.client.api.AnaplanAuthenticationAPI;
 import com.anaplan.client.dto.responses.RefreshTokenResp;
 import com.anaplan.client.exceptions.AnaplanAPIException;
 import com.anaplan.client.transport.ConnectionProperties;
+import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +14,7 @@ public abstract class AbstractAuthenticator implements Authenticator {
       .getLogger(AbstractAuthenticator.class.getName());
 
   private static final int TOKEN_EXPIRATION_REFRESH_WINDOW = 5 * 60 * 1000;
-  private static final int TOKEN_EXPIRED_WINDOW = 60 * 1000;
+  private static final int TOKEN_EXPIRED_WINDOW = 0;
 
   protected ConnectionProperties connectionProperties;
   protected AnaplanAuthenticationAPI authClient;

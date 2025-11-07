@@ -45,8 +45,8 @@ public class FeignApiRetryer extends Retryer.Default {
     if (this.retries++ >= this.maxAttempts) {
       throw e;
     } else {
-      LOG.info("Retrying API request: Attempt ({})", this.retries);
       LOG.debug("Request details: {}", e.getMessage());
+	  LOG.info("Retrying API request: Attempt ({})", this.retries);
       long interval;
       if (e.retryAfter() != null) {
         interval = e.retryAfter().getTime() - this.currentTimeMillis();

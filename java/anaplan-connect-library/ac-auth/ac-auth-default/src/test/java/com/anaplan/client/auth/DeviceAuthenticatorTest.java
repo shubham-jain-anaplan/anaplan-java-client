@@ -9,6 +9,15 @@ import com.anaplan.client.exceptions.AnaplanAPIException;
 import com.anaplan.client.transport.ConnectionProperties;
 import com.anaplan.client.transport.client.OkHttpFeignClientProvider;
 import feign.Client;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +31,6 @@ import java.lang.reflect.Method;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -75,7 +83,7 @@ class DeviceAuthenticatorTest {
 
   @Test
   void testAuthenticateWithForceNonRotatable()
-      throws NoSuchFieldException, IllegalAccessException, InterruptedException, IOException, InvocationTargetException, NoSuchMethodException {
+      throws NoSuchFieldException, IllegalAccessException, InterruptedException, IOException, InvocationTargetException, NoSuchMethodException, NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException {
     ConnectionProperties connectionProperties = new ConnectionProperties();
     connectionProperties.setClientId("id");
     connectionProperties.setAuthServiceUri(URI.create("auth_url"));
@@ -96,14 +104,14 @@ class DeviceAuthenticatorTest {
       Field field = deviceAuthenticator.getClass().getDeclaredField("store");
       field.setAccessible(true);
       DeviceAuthenticator.TokenStore tokenPath = (DeviceAuthenticator.TokenStore) field.get(deviceAuthenticator);
-      Files.exists(Paths.get(tokenPath.getRefreshTokenKeyStorePath()));
+      Files.exists(tokenPath.getRefreshTokenKeyStorePath());
 
       // check saved token
       Method method = deviceAuthenticator.getClass().getDeclaredMethod("getDecodedRefreshToken");
       method.setAccessible(true);
       String savedToken = (String) method.invoke(deviceAuthenticator);
       assertThat(firstRefreshToken, is(savedToken));
-      FileTime ft1 = Files.getLastModifiedTime(Paths.get(tokenPath.getRefreshTokenKeyStorePath()));
+      FileTime ft1 = Files.getLastModifiedTime(tokenPath.getRefreshTokenKeyStorePath());
       connectionProperties.setForceRegister(true);
       Thread.sleep(2000L);
 
@@ -121,14 +129,14 @@ class DeviceAuthenticatorTest {
       field = deviceAuthenticator.getClass().getDeclaredField("store");
       field.setAccessible(true);
       tokenPath = (DeviceAuthenticator.TokenStore) field.get(deviceAuthenticator);
-      Files.exists(Paths.get(tokenPath.getRefreshTokenKeyStorePath()));
+      Files.exists(tokenPath.getRefreshTokenKeyStorePath());
 
       // check saved token
       method = deviceAuthenticator.getClass().getDeclaredMethod("getDecodedRefreshToken");
       method.setAccessible(true);
       savedToken = (String) method.invoke(deviceAuthenticator);
       assertThat(secondRefreshToken, is(savedToken));
-      FileTime ft2 = Files.getLastModifiedTime(Paths.get(tokenPath.getRefreshTokenKeyStorePath()));
+      FileTime ft2 = Files.getLastModifiedTime(tokenPath.getRefreshTokenKeyStorePath());
       verify(authClient, times(0)).
           oauthRefreshToken(argThat(new NotNullObject()), argThat(new NotNullObject()), argThat(new NotNullObject()));
       assertThat(ft1.toMillis(), not(ft2.toMillis()));
@@ -141,14 +149,14 @@ class DeviceAuthenticatorTest {
       field = deviceAuthenticator.getClass().getDeclaredField("store");
       field.setAccessible(true);
       tokenPath = ((DeviceAuthenticator.TokenStore) field.get(deviceAuthenticator));
-      Files.exists(Paths.get(tokenPath.getRefreshTokenKeyStorePath()));
+      Files.exists(tokenPath.getRefreshTokenKeyStorePath());
 
       // check saved token
       method = deviceAuthenticator.getClass().getDeclaredMethod("getDecodedRefreshToken");
       method.setAccessible(true);
       savedToken = (String) method.invoke(deviceAuthenticator);
       assertThat(secondRefreshToken, is(savedToken));
-      FileTime ft3 = Files.getLastModifiedTime(Paths.get(tokenPath.getRefreshTokenKeyStorePath()));
+      FileTime ft3 = Files.getLastModifiedTime(tokenPath.getRefreshTokenKeyStorePath());
       verify(authClient, times(1)).
           oauthRefreshToken(argThat(new NotNullObject()), argThat(new NotNullObject()), argThat(new NotNullObject()));
       assertThat(ft2.toMillis(), is(ft3.toMillis()));
@@ -159,7 +167,7 @@ class DeviceAuthenticatorTest {
 
   @Test
   void testAuthenticateWithForceRotatable()
-      throws NoSuchFieldException, IllegalAccessException, InterruptedException, IOException, InvocationTargetException, NoSuchMethodException {
+      throws NoSuchFieldException, IllegalAccessException, InterruptedException, IOException, InvocationTargetException, NoSuchMethodException, NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException {
     ConnectionProperties connectionProperties = new ConnectionProperties();
     connectionProperties.setClientId("id");
     connectionProperties.setRefreshType(DeviceTypeToken.ROTATABLE.name());
@@ -181,15 +189,15 @@ class DeviceAuthenticatorTest {
       // check token exists
       Field field = deviceAuthenticator.getClass().getDeclaredField("store");
       field.setAccessible(true);
-      String tokenPath = ((DeviceAuthenticator.TokenStore) field.get(deviceAuthenticator)).getRefreshTokenKeyStorePath();
-      Files.exists(Paths.get(tokenPath));
+      Path tokenPath = ((DeviceAuthenticator.TokenStore) field.get(deviceAuthenticator)).getRefreshTokenKeyStorePath();
+      Files.exists(tokenPath);
 
       // check saved token
       Method method = deviceAuthenticator.getClass().getDeclaredMethod("getDecodedRefreshToken");
       method.setAccessible(true);
       String savedToken = (String) method.invoke(deviceAuthenticator);
       assertThat(firstRefreshToken, is(savedToken));
-      FileTime ft1 = Files.getLastModifiedTime(Paths.get(tokenPath));
+      FileTime ft1 = Files.getLastModifiedTime(tokenPath);
       connectionProperties.setForceRegister(true);
       String secondAccessToken = "access_token_2";
       String secondRefreshToken = "refresh_token_2";
@@ -205,14 +213,14 @@ class DeviceAuthenticatorTest {
       field = deviceAuthenticator.getClass().getDeclaredField("store");
       field.setAccessible(true);
       tokenPath = ((DeviceAuthenticator.TokenStore) field.get(deviceAuthenticator)).getRefreshTokenKeyStorePath();
-      Files.exists(Paths.get(tokenPath));
+      Files.exists(tokenPath);
 
       // check saved token
       method = deviceAuthenticator.getClass().getDeclaredMethod("getDecodedRefreshToken");
       method.setAccessible(true);
       savedToken = (String) method.invoke(deviceAuthenticator);
       assertThat(secondRefreshToken, is(savedToken));
-      FileTime ft2 = Files.getLastModifiedTime(Paths.get(tokenPath));
+      FileTime ft2 = Files.getLastModifiedTime(tokenPath);
       verify(authClient, times(0)).
           oauthRefreshToken(argThat(new NotNullObject()), argThat(new NotNullObject()), argThat(new NotNullObject()));
       assertThat(ft1.toMillis(), not(ft2.toMillis()));
@@ -226,14 +234,14 @@ class DeviceAuthenticatorTest {
       field = deviceAuthenticator.getClass().getDeclaredField("store");
       field.setAccessible(true);
       tokenPath = ((DeviceAuthenticator.TokenStore) field.get(deviceAuthenticator)).getRefreshTokenKeyStorePath();
-      Files.exists(Paths.get(tokenPath));
+      Files.exists(tokenPath);
 
       // check saved token
       method = deviceAuthenticator.getClass().getDeclaredMethod("getDecodedRefreshToken");
       method.setAccessible(true);
       savedToken = (String) method.invoke(deviceAuthenticator);
       assertThat(infoRefresh.getRefreshToken(), is(savedToken));
-      FileTime ft3 = Files.getLastModifiedTime(Paths.get(tokenPath));
+      FileTime ft3 = Files.getLastModifiedTime(tokenPath);
       verify(authClient, times(1)).
           oauthRefreshToken(argThat(new NotNullObject()), argThat(new NotNullObject()), argThat(new NotNullObject()));
       assertThat(ft2.toMillis(), not(ft3.toMillis()));
@@ -243,7 +251,8 @@ class DeviceAuthenticatorTest {
   }
 
   @Test
-  void testAuthenticateWithOutForce() throws NoSuchFieldException, IllegalAccessException, InterruptedException, IOException {
+  void testAuthenticateWithOutForce()
+      throws NoSuchFieldException, IllegalAccessException, InterruptedException, IOException, NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException {
     ConnectionProperties connectionProperties = new ConnectionProperties();
     connectionProperties.setClientId("id");
     connectionProperties.setAuthServiceUri(URI.create("auth_url"));
@@ -255,12 +264,12 @@ class DeviceAuthenticatorTest {
       assertEquals("access", new String(deviceAuthenticator.authenticate()));
       Field field = deviceAuthenticator.getClass().getDeclaredField("store");
       field.setAccessible(true);
-      String tokenPath = ((DeviceAuthenticator.TokenStore) field.get(deviceAuthenticator)).getRefreshTokenKeyStorePath();
-      Files.exists(Paths.get(tokenPath));
-      FileTime ft1 = Files.getLastModifiedTime(Paths.get(tokenPath));
+      Path tokenPath = ((DeviceAuthenticator.TokenStore) field.get(deviceAuthenticator)).getRefreshTokenKeyStorePath();
+      Files.exists(tokenPath);
+      FileTime ft1 = Files.getLastModifiedTime(tokenPath);
       Thread.sleep(1000L);
       deviceAuthenticator.authenticate();
-      FileTime ft2 = Files.getLastModifiedTime(Paths.get(tokenPath));
+      FileTime ft2 = Files.getLastModifiedTime(tokenPath);
       verify(authClient, times(1)).
           oauthRefreshToken(argThat(new NotNullObject()), argThat(new NotNullObject()), argThat(new NotNullObject()));
       assertThat(ft1.toMillis(), is(ft2.toMillis()));
@@ -270,7 +279,8 @@ class DeviceAuthenticatorTest {
   }
 
   @Test
-  void testAuthenticateWithRefresh() {
+  void testAuthenticateWithRefresh()
+      throws NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException {
     ConnectionProperties connectionProperties = new ConnectionProperties();
     connectionProperties.setClientId("id");
     connectionProperties.setAuthServiceUri(URI.create("auth_url"));
@@ -285,7 +295,8 @@ class DeviceAuthenticatorTest {
   }
 
   @Test
-  void testRefreshToken() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
+  void testRefreshToken()
+      throws NoSuchFieldException, IllegalAccessException, InterruptedException, NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException {
     DeviceAuthenticator deviceAuthenticator = new DeviceAuthenticator(connectionProperties, authClient);
     deviceAuthenticator.clearRefreshTokenEntry();
     try {
@@ -310,7 +321,8 @@ class DeviceAuthenticatorTest {
   }
 
   @Test
-  void testRefreshTokenExpire() throws NoSuchFieldException, IllegalAccessException {
+  void testRefreshTokenExpire()
+      throws NoSuchFieldException, IllegalAccessException, NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException {
     DeviceAuthenticator deviceAuthenticator = new DeviceAuthenticator(connectionProperties, authClient);
     try {
       deviceAuthenticator.refreshToken();
@@ -324,7 +336,8 @@ class DeviceAuthenticatorTest {
   }
 
   @Test
-  void testRefreshTokenCreationWithSuccess() {
+  void testRefreshTokenCreationWithSuccess()
+      throws NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException {
     DeviceAuthenticator deviceAuthenticator = new DeviceAuthenticator(connectionProperties, authClient);
     try {
       assertFalse(new String(deviceAuthenticator.refreshToken()).isEmpty());
@@ -334,7 +347,8 @@ class DeviceAuthenticatorTest {
   }
 
   @Test
-  void testFailAuthenticate() {
+  void testFailAuthenticate()
+      throws NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException {
     OkHttpFeignClientProvider okHttpClientProvider = new OkHttpFeignClientProvider();
     Supplier<Client> clientSupplier = () -> okHttpClientProvider.createFeignClient(connectionProperties);
 
@@ -352,7 +366,8 @@ class DeviceAuthenticatorTest {
   }
 
   @Test
-  void testGetRefreshToken() {
+  void testGetRefreshToken()
+      throws NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException {
     DeviceAuthenticator deviceAuthenticator = new DeviceAuthenticator(connectionProperties, authClient);
     try {
       OauthTokenInfo refreshToken = deviceAuthenticator.getAuthToken();
@@ -364,7 +379,8 @@ class DeviceAuthenticatorTest {
   }
 
   @Test
-  void testGetRefreshTokenWithNoDeviceRegistration() {
+  void testGetRefreshTokenWithNoDeviceRegistration()
+      throws NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException {
     AnaplanAuthenticationAPI authClientTemp = Mockito.mock(AnaplanAuthenticationAPI.class);
     DeviceCodeInfo codeInfo = new DeviceCodeInfo();
     codeInfo.setDeviceCode("code");
@@ -382,7 +398,8 @@ class DeviceAuthenticatorTest {
   }
 
   @Test
-  void testInAccessiblePathThrowsAPIException() throws NoSuchFieldException, IllegalAccessException { //
+  void testInAccessiblePathThrowsAPIException()
+      throws NoSuchFieldException, IllegalAccessException, NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException { //
     ConnectionProperties connectionProperties = new ConnectionProperties();
     connectionProperties.setClientId("id");
     connectionProperties.setAuthServiceUri(URI.create("auth_url"));
@@ -396,7 +413,7 @@ class DeviceAuthenticatorTest {
 
       Field path = tokenStore.getClass().getDeclaredField("refreshTokenKeyStorePath");
       path.setAccessible(true);
-      path.set(tokenStore, String.format("%s/%s",System.getProperty("user.home"), UUID.randomUUID()));
+      path.set(tokenStore, Paths.get(String.format("%s/%s",System.getProperty("user.home"), UUID.randomUUID())));
       byte[] response = deviceAuthenticator.authenticate();
       assertEquals(new String(response), "access");
     } finally {
@@ -405,7 +422,8 @@ class DeviceAuthenticatorTest {
   }
 
   @Test
-  void testNoKeystoreExistsBefore() throws NoSuchFieldException, IllegalAccessException { //
+  void testNoKeystoreExistsBefore()
+      throws NoSuchFieldException, IllegalAccessException, NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException { //
     ConnectionProperties connectionProperties = new ConnectionProperties();
     connectionProperties.setClientId("id");
     connectionProperties.setAuthServiceUri(URI.create("auth_url"));
@@ -419,7 +437,7 @@ class DeviceAuthenticatorTest {
 
       Field path = tokenStore.getClass().getDeclaredField("refreshTokenKeyStorePath");
       path.setAccessible(true);
-      path.set(tokenStore, "/SomePath/NoExisting");
+      path.set(tokenStore, Paths.get("/SomePath/NoExisting"));
       AnaplanAPIException anaplanAPIException = assertThrows(AnaplanAPIException.class, deviceAuthenticator::authenticate);
       assertTrue(anaplanAPIException.getMessage().startsWith("Unable to save refresh token"));
     } finally {
@@ -428,7 +446,8 @@ class DeviceAuthenticatorTest {
   }
 
   @Test
-  void testGetRefreshTokenWithRetry() {
+  void testGetRefreshTokenWithRetry()
+      throws NoSuchPaddingException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException {
     DeviceAuthenticator deviceAuthenticator = new DeviceAuthenticator(connectionProperties, authClient);
     try {
       when(
