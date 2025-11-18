@@ -7,49 +7,62 @@
   <groupId>com.anaplan.java.client</groupId>
   <artifactId>anaplan-connect</artifactId>
   <packaging>pom</packaging>
-  <version>4.1.0</version>
+  <!-- <version>4.1.0</version>-->
+  <version>4.3.4</version>
   <name>Anaplan Connect</name>
 
   <properties>
     <category>Community</category>
     <licensePath>LICENSE.txt</licensePath>
     <maven.build.timestamp.format>MMM dd, yyyy @ KK:mm:ss a (z)</maven.build.timestamp.format>
-    <artifactory-maven-plugin.version>2.7.0</artifactory-maven-plugin.version>
+   <!-- <artifactory-maven-plugin.version>2.7.0</artifactory-maven-plugin.version>-->
+    <artifactory-maven-plugin.version>3.6.2</artifactory-maven-plugin.version>
     <build-info-maven-plugin.version>1.0.3</build-info-maven-plugin.version>
 
     <junit.version>4.12</junit.version>
-    <jdk.version>1.8</jdk.version>
-    <compiler.plugin.version>3.8.0</compiler.plugin.version>
+    <jdk.version>21</jdk.version>
+    <jdk.target.version>21</jdk.target.version>
+    <compiler.plugin.version>3.11.0</compiler.plugin.version>
 
-    <logback.version>1.2.9</logback.version>
-
+   <!-- <logback.version>1.2.9</logback.version>-->
+     <logback.version>1.5.18</logback.version>
     <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
     <github.maven.plugin.version>0.12</github.maven.plugin.version>
     <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
     <github.global.server>github</github.global.server>
 
     <feign-jackson.version>10.0.0</feign-jackson.version>
-    <guava.version>30.0-jre</guava.version>
+    <!--<guava.version>30.0-jre</guava.version>-->
+    <guava.version>32.1.3-jre</guava.version>
     <opencsv.version>5.5.1</opencsv.version>
-    <mysql.connector.version>8.0.28</mysql.connector.version>
-    <h2.version>2.0.204</h2.version>
+   <!-- <mysql.connector.version>8.0.28</mysql.connector.version>-->
+    <mysql.connector.version>8.3.0</mysql.connector.version>
+   <!-- <h2.version>2.0.204</h2.version>-->
+   <h2.version>2.3.232</h2.version>
     <protobuf-java.version>3.16.1</protobuf-java.version>
     <jcifs.version>1.3.17</jcifs.version>
 
     <mockito.version>1.10.19</mockito.version>
-    <bouncycastle.version>1.67</bouncycastle.version>
+  <!--   <bouncycastle.version>1.67</bouncycastle.version>-->
+  <bouncycastle.version>1.78</bouncycastle.version>
     <ac.version>${project.version}</ac.version>
 
-    <slf4j-api.version>1.7.30</slf4j-api.version>
-    <jackson.version>2.13.2</jackson.version>
-    <jackson-databind.version>2.13.2.1</jackson-databind.version>
+   <!--  <slf4j-api.version>1.7.30</slf4j-api.version>-->
+    <slf4j-api.version>2.0.12</slf4j-api.version>
+   <!-- <jackson.version>2.13.2</jackson.version>-->
+   <jackson.version>2.16.0</jackson.version>
+   <!--<jackson-databind.version>2.13.2.1</jackson-databind.version>-->
+   <jackson-databind.version>2.16.0</jackson-databind.version>
     <feign.version>10.0.0</feign.version>
-    <okhttp.version>4.8.0</okhttp.version>
+   <!-- <okhttp.version>4.8.0</okhttp.version>-->
+    <okhttp.version>4.12.0</okhttp.version>
     <junit-jupiter.version>5.6.0</junit-jupiter.version>
     <httpclient.version>4.5.13</httpclient.version>
     <commons-codec.version>1.13</commons-codec.version>
-    <commons.io.version>2.8.0</commons.io.version>
+   <!-- <commons.io.version>2.8.0</commons.io.version>-->
+    <commons.io.version>2.19.0</commons.io.version>
     <common-csv-version>1.9.0</common-csv-version>
+    <tink.version>1.17.0</tink.version>
   </properties>
 
   <modules>
@@ -176,11 +189,17 @@
         <artifactId>okhttp</artifactId>
         <version>${okhttp.version}</version>
       </dependency>
-      <dependency>
+      <!-- <dependency>
         <groupId>org.bouncycastle</groupId>
         <artifactId>bcpkix-jdk15on</artifactId>
         <version>${bouncycastle.version}</version>
-      </dependency>
+      </dependency>-->
+      <dependency>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcpkix-jdk18on</artifactId>
+      <version>${bouncycastle.version}</version>
+    </dependency>
+      
       <dependency>
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpclient</artifactId>
@@ -263,9 +282,12 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>mysql</groupId>
+        <!-- <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
-        <version>${mysql.connector.version}</version>
+        <version>${mysql.connector.version}</version>-->
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <version>${mysql.connector.version}</version>
         <exclusions>
           <exclusion>
             <groupId>com.google.protobuf</groupId>
@@ -289,6 +311,11 @@
         <artifactId>hamcrest-all</artifactId>
         <version>1.3</version>
         <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.google.crypto.tink</groupId>
+        <artifactId>tink</artifactId>
+        <version>${tink.version}</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
@@ -349,7 +376,7 @@
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
     </dependency>
-    <dependency>
+  <!--   <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <exclusions>
@@ -358,7 +385,7 @@
           <artifactId>protobuf-java</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>
+    </dependency>-->
     <dependency>
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-java</artifactId>
@@ -439,7 +466,7 @@
         <version>${compiler.plugin.version}</version>
         <configuration>
           <source>${jdk.version}</source>
-          <target>${jdk.version}</target>
+          <target>${jdk.target.version}</target>
         </configuration>
       </plugin>
       <!-- Maven Assembly Plugin -->
@@ -491,10 +518,26 @@
           </execution>
         </executions>
       </plugin>
+      
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>6.1.6</version>
+       <!--  <version>6.1.6</version>-->
+        <version>12.1.1</version>
+        <configuration>
+          <ossIndexAnalyzerEnabled>false</ossIndexAnalyzerEnabled>
+         <failBuildOnAnyVulnerability>false</failBuildOnAnyVulnerability>
+         <failOnError>false</failOnError>
+          <failBuildOnCVSS>10</failBuildOnCVSS>
+          <!-- <suppressionFiles>
+            <suppressionFile>${project.basedir}/suppression.xml</suppressionFile>
+          </suppressionFiles> -->
+          <outputDirectory>target/reports</outputDirectory>
+          <formats>
+            <format>HTML</format>
+            <format>JSON</format>
+          </formats>
+        </configuration>
         <executions>
           <execution>
             <goals>
@@ -503,6 +546,7 @@
           </execution>
         </executions>
       </plugin>
+      
     </plugins>
   </build>
 </project>

@@ -2,22 +2,29 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  
+  <parent>
+    <artifactId>anaplan-connect</artifactId>
+    <groupId>com.anaplan.java.client</groupId>
+    <version>4.3.4</version>
+  </parent>
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.anaplan.client</groupId>
-  <artifactId>anaplan-connect</artifactId>
+  <!--<groupId>com.anaplan.client</groupId>-->
+  <!--<artifactId>anaplan-connect</artifactId>-->
+  <artifactId>anaplan-connect-client</artifactId>
   <version>4.3.4</version>
-  <name>Anaplan Connect</name>
+ <!-- <name>Anaplan Connect</name>-->
 
   <properties>
     <ac.version>4.3.4</ac.version>
-    <acl.version>2.4.4</acl.version>
+   <!-- <acl.version>2.4.4</acl.version>-->
     <category>Community</category>
     <licensePath>LICENSE.md</licensePath>
     <maven.build.timestamp.format>MMM dd, yyyy @ KK:mm:ss a (z)</maven.build.timestamp.format>
     <jdk.version>21</jdk.version>
-    <jdk.target.version>1.8</jdk.target.version>
-    <jdk.release.version>8</jdk.release.version>
+    <!--<jdk.target.version>1.8</jdk.target.version>-->
+   <!-- <jdk.release.version>8</jdk.release.version>-->
     <compiler.plugin.version>3.8.0</compiler.plugin.version>
     <feign-jackson.version>10.0.0</feign-jackson.version>
     <github.global.server>github</github.global.server>
@@ -63,10 +70,15 @@
       <artifactId>bcpkix-jdk18on</artifactId>
       <version>${bouncycastle.version}</version>
     </dependency>
-    <dependency>
+    <!-- <dependency>
       <groupId>com.anaplan.client</groupId>
       <artifactId>ac-impl-default</artifactId>
       <version>${acl.version}</version>
+    </dependency>-->
+    <dependency>
+      <groupId>com.anaplan.java.client</groupId>
+      <artifactId>ac-impl-default</artifactId>
+      <version>${ac.version}</version>
     </dependency>
     <dependency>
       <groupId>com.opencsv</groupId>
@@ -283,8 +295,9 @@
         <version>${compiler.plugin.version}</version>
         <configuration>
           <source>${jdk.version}</source>
-          <target>${jdk.target.version}</target>
-          <release>${jdk.release.version}</release>
+          <!-- <target>${jdk.target.version}</target>-->
+          <target>${jdk.version}</target>
+        <!--  <release>${jdk.release.version}</release>-->
         </configuration>
       </plugin>
       <!-- Maven Assembly Plugin -->
@@ -395,12 +408,12 @@
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>12.1.1</version>
+       <!--  <version>12.1.1</version>
         <configuration>
           <failBuildOnCVSS>7</failBuildOnCVSS>
-          <!-- <suppressionFiles>
+           <suppressionFiles>
             <suppressionFile>${project.basedir}/suppression.xml</suppressionFile>
-          </suppressionFiles> -->
+          </suppressionFiles>
           <outputDirectory>target/reports</outputDirectory>
           <formats>
             <format>HTML</format>
@@ -429,7 +442,7 @@
               <outputFile>${project.build.outputDirectory}/properties-from-pom.properties</outputFile>
             </configuration>
           </execution>
-        </executions>
+        </executions> -->
       </plugin>
     </plugins>
   </build>

@@ -4,12 +4,21 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
+  <!-- <parent>
     <groupId>com.anaplan.client</groupId>
     <artifactId>ac-parent</artifactId>
     <version>2.4.4</version>
     <relativePath>../pom.xml</relativePath>
+  </parent>-->
+  
+  <parent>
+    <groupId>com.anaplan.java.client</groupId>
+    <artifactId>anaplan-connect-library</artifactId>
+    <version>4.3.4</version>
+  <!--  <version>2.4.4</version>-->
+    <relativePath>../pom.xml</relativePath>
   </parent>
+
 
   <artifactId>ac-log</artifactId>
   <name>Anaplan Storage SDK Library Logging POM</name>

@@ -4,10 +4,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
+  <!-- <parent>
     <groupId>com.anaplan.client</groupId>
     <artifactId>ac-impl</artifactId>
     <version>2.4.4</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>-->
+  
+  <parent>
+    <groupId>com.anaplan.java.client</groupId>
+    <artifactId>ac-impl</artifactId>
+    <version>4.3.4</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -16,23 +23,24 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.anaplan.client</groupId>
+      <groupId>com.anaplan.java.client</groupId>
       <artifactId>api-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.anaplan.client</groupId>
+      <groupId>com.anaplan.java.client</groupId>
       <artifactId>ac-log-logback</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.anaplan.client</groupId>
+      <groupId>com.anaplan.java.client</groupId>
       <artifactId>ac-auth-default</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.anaplan.client</groupId>
+      <groupId>com.anaplan.java.client</groupId>
       <artifactId>ac-integrations-jdbc</artifactId>
+      <version>4.3.4</version>
     </dependency>
     <dependency>
-      <groupId>com.anaplan.client</groupId>
+      <groupId>com.anaplan.java.client</groupId>
       <artifactId>ac-http-feign</artifactId>
     </dependency>
     <dependency>

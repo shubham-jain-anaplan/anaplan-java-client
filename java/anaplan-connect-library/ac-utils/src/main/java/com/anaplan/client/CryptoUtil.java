@@ -49,7 +49,6 @@ public class CryptoUtil {
 
 		try {
 			Aead aead = getAead();
-
 			byte[] ciphertext = aead.encrypt(data, null);
 			return ciphertext; // Return salt and ciphertext combined
 		} catch (GeneralSecurityException | IOException e) {

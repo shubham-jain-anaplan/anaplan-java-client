@@ -5,9 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.anaplan.client</groupId>
+   <!-- <groupId>com.anaplan.client</groupId>--> 
+   <groupId>com.anaplan.java.client</groupId>
     <artifactId>ac-auth</artifactId>
-    <version>2.4.4</version>
+   <!-- <version>2.4.4</version>-->
+   <version>4.3.4</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -18,7 +20,8 @@
   <dependencies>
 
     <dependency>
-      <groupId>com.anaplan.client</groupId>
+     <!-- <groupId>com.anaplan.client</groupId>-->
+      <groupId>com.anaplan.java.client</groupId>
       <artifactId>api-core</artifactId>
     </dependency>
     <dependency>
@@ -34,7 +37,8 @@
       <artifactId>bcpkix-jdk18on</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.anaplan.client</groupId>
+     <!-- <groupId>com.anaplan.client</groupId>-->
+     <groupId>com.anaplan.java.client</groupId>
       <artifactId>ac-http-feign</artifactId>
     </dependency>
   </dependencies>

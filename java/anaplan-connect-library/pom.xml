@@ -2,11 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  
+<parent>
+ <!--  <groupId>com.anaplan.client</groupId>-->
+ <groupId>com.anaplan.java.client</groupId>
+ <!-- <artifactId>ac-parent</artifactId>-->
+ <artifactId>anaplan-connect</artifactId>
+  <!--<version>2.4.4</version>-->
+  <version>4.3.4</version>
+  </parent>
   <modelVersion>4.0.0</modelVersion>
-
-  <groupId>com.anaplan.client</groupId>
-  <artifactId>ac-parent</artifactId>
-  <version>2.4.4</version>
+  <artifactId>anaplan-connect-library</artifactId>
+ <!--  <version>4.3.4</version>-->
+  <version>4.3.4</version>
   <name>Anaplan Storage SDK Library Parent POM</name>
   <packaging>pom</packaging>
 
@@ -22,13 +30,12 @@
 
   <properties>
 
-    <ac.version>${project.version}</ac.version>
+   <!-- <ac.version>${project.version}</ac.version>-->
 
     <maven.build.timestamp.format>MMM dd, yyyy @ KK:mm:ss a (z)</maven.build.timestamp.format>
     <jdk.version>21</jdk.version>
-    <jdk.target.version>1.8</jdk.target.version>
-    <jdk.release.version>8</jdk.release.version>
-    <compiler.plugin.version>3.8.0</compiler.plugin.version>
+    <jdk.target.version>21</jdk.target.version>
+    <compiler.plugin.version>3.11.0</compiler.plugin.version>
     <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
     <artifactory-maven-plugin.version>3.6.2</artifactory-maven-plugin.version>
     <build-info-maven-plugin.version>1.0.3</build-info-maven-plugin.version>
@@ -55,59 +62,59 @@
 
   <dependencyManagement>
     <dependencies>
-      <!-- SDK dependencies -->
+      <!--  SDK dependencies -->
       <dependency>
-        <groupId>com.anaplan.client</groupId>
+        <groupId>com.anaplan.java.client</groupId>
         <artifactId>ac-auth</artifactId>
         <version>${ac.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.anaplan.client</groupId>
+        <groupId>com.anaplan.java.client</groupId>
         <artifactId>ac-auth-default</artifactId>
         <version>${ac.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.anaplan.client</groupId>
+        <groupId>com.anaplan.java.client</groupId>
         <artifactId>ac-http</artifactId>
         <version>${ac.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.anaplan.client</groupId>
+        <groupId>com.anaplan.java.client</groupId>
         <artifactId>ac-http-feign</artifactId>
         <version>${ac.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.anaplan.client</groupId>
+        <groupId>com.anaplan.java.client</groupId>
         <artifactId>ac-impl</artifactId>
         <version>${ac.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.anaplan.client</groupId>
+        <groupId>com.anaplan.java.client</groupId>
         <artifactId>ac-impl-default</artifactId>
         <version>${ac.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.anaplan.client</groupId>
+        <groupId>com.anaplan.java.client</groupId>
         <artifactId>ac-integrations</artifactId>
         <version>${ac.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.anaplan.client</groupId>
+        <groupId>com.anaplan.java.client</groupId>
         <artifactId>ac-integrations-jdbc</artifactId>
         <version>${ac.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.anaplan.client</groupId>
+        <groupId>com.anaplan.java.client</groupId>
         <artifactId>ac-log</artifactId>
         <version>${ac.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.anaplan.client</groupId>
+        <groupId>com.anaplan.java.client</groupId>
         <artifactId>ac-log-logback</artifactId>
         <version>${ac.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.anaplan.client</groupId>
+        <groupId>com.anaplan.java.client</groupId>
         <artifactId>ac-utils</artifactId>
         <version>${ac.version}</version>
       </dependency>
@@ -116,7 +123,7 @@
         <artifactId>api-core</artifactId>
         <version>${ac.version}</version>
       </dependency>
-      <!-- external dependencies -->
+   <!--   external dependencies --> 
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
@@ -324,8 +331,7 @@
           <version>${compiler.plugin.version}</version>
           <configuration>
             <source>${jdk.version}</source>
-            <target>${jdk.target.version}</target>
-            <release>${jdk.release.version}</release>
+             <target>${jdk.target.version}</target>
           </configuration>
         </plugin>
         <!--
@@ -366,16 +372,16 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.0.0-M5</version>
-          <configuration>
+         <!--  <configuration>
             <argLine>
-              --add-opens java.base/java.lang=ALL-UNNAMED
+              add-opens java.base/java.lang=ALL-UNNAMED
             </argLine>
-          </configuration>
+          </configuration>-->
         </plugin>
       </plugins>
     </pluginManagement>
-    <plugins>
-      <plugin>
+    <!--<plugins>
+       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
         <version>8.1.2</version>
@@ -398,9 +404,9 @@
           </execution>
         </executions>
       </plugin>
-    </plugins>
+    </plugins>-->
   </build>
-  <profiles>
+ <!--  <profiles>
     <profile>
       <id>artifactory</id>
       <activation>
@@ -450,7 +456,7 @@
                     <username>${ARTIFACTORY_USERNAME}</username>
                     <password>${ARTIFACTORY_PASSWORD}</password>
                     <repoKey>${deployment.repo}</repoKey>
-                    <!--                    <includePatterns>*.jar,*.pom</includePatterns>-->
+                                        <includePatterns>*.jar,*.pom</includePatterns>
                     <snapshotRepoKey>${deployment.repo}</snapshotRepoKey>
                     <recordAllDependencies>true</recordAllDependencies>
                   </publisher>
@@ -505,5 +511,5 @@
       <id>${deployment.repo}</id>
       <url>https://artifacts.anaplan-np.net/artifactory/${deployment.repo}</url>
     </repository>
-  </distributionManagement>
+  </distributionManagement>-->
 </project>
